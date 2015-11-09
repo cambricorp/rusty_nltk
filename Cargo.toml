@@ -1,0 +1,19 @@
+[package]
+name = "rusty_nltk"
+version = "0.0.1"
+authors = ["Elijah Rippeth <elijah.rippeth@gmail.com>",
+           "Michael Recachinas <m.recachinas@gmail.com>"]
+license = "Apache-2.0"
+homepage = ""
+repository = "https://github.com/erip/rusty-NLTK"
+documentation = ""
+description = "Port of NLTK to Rust"
+
+[lib]
+name = "rusty_nltk"
+path = "src/lib.rs"
+
+[features]
+
+[dependencies]
+
