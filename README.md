@@ -1,6 +1,6 @@
-# NLTK-rs
+# rusty-NLTK
 
-NLTK-rs -- the Natural Language Toolkit (Rust) -- is a suite of open source Rust
+rusty-NLTK -- the Natural Language Toolkit (Rust) -- is a suite of open source Rust
 modules, data sets and tutorials supporting research and development in Natural
 Language Processing. It is based on NLTK.
 
@@ -13,6 +13,7 @@ Copyright (C) 2001-2015 NLTK Project
 For license information, see [LICENSE](LICENSE).
 
 [AUTHORS.md](AUTHORS.md) has a list of everyone that contributed to NLTK-rs.
+
 
 
 ### Redistributing
