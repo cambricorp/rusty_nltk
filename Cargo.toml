@@ -1,4 +1,5 @@
 [package]
+
 name = "rusty_nltk"
 version = "0.0.1"
 authors = ["Elijah Rippeth <elijah.rippeth@gmail.com>",
@@ -16,4 +17,3 @@ path = "src/lib.rs"
 [features]
 
 [dependencies]
-
