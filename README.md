@@ -1,4 +1,6 @@
-# rusty-NLTK
+# rusty-NLTK 
+
+[![Build status](https://travis-ci.org/erip/rusty-NLTK.svg?branch=master)](https://travis-ci.org/erip/rusty-NLTK/)
 
 rusty-NLTK -- the Natural Language Toolkit (Rust) -- is a suite of open source Rust
 modules, data sets and tutorials supporting research and development in Natural
