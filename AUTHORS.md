@@ -1,4 +1,4 @@
-# Natural Language Toolkit - Rust (NLTK-rs) Authors
+#  rusty-NLTK Authors
 
 ## Original Authors
 
