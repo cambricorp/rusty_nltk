@@ -1,11 +1,11 @@
-# rusty-NLTK Authors
+# rusty_nltk Authors
 
-## rusty-NLTK Original Authors
+## rusty_nltk Original Authors
 
 - Elijah Rippeth <elijah.rippeth@gmail.com>
 - Michael Recachinas <m.recachinas@gmail.com>
 
-## rusty-NLTK Contributors
+## rusty_nltk Contributors
 
 # Natural Language Toolkit (NLTK) Authors
 
