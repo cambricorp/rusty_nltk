@@ -14,7 +14,7 @@ Copyright (C) 2001-2015 NLTK Project
 
 For license information, see [LICENSE](LICENSE).
 
-[AUTHORS.md](AUTHORS.md) has a list of everyone that contributed to rusty-NLTK.
+[AUTHORS.md](AUTHORS.md) has a list of everyone that contributed to rusty_nltk.
 
 
 
