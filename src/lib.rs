@@ -21,3 +21,4 @@ pub mod translate;
 pub mod twitter;
 
 pub use tokenize::api;
+pub use tokenize::util;
