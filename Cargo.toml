@@ -6,7 +6,7 @@ authors = ["Elijah Rippeth <elijah.rippeth@gmail.com>",
            "Michael Recachinas <m.recachinas@gmail.com>"]
 license = "Apache-2.0"
 homepage = ""
-repository = "https://github.com/erip/rusty-NLTK"
+repository = "https://github.com/erip/rusty_nltk"
 documentation = ""
 description = "Port of NLTK to Rust"
 
