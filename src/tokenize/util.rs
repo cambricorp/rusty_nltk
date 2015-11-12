@@ -1,4 +1,4 @@
-fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(i32, i32)>, String> {
+pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(i32, i32)>, String> {
     if sep.len() == 0 {
         Err(String::from("Error! Separator has a length of 0!"))
     } else {
