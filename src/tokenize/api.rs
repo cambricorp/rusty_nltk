@@ -1,5 +1,6 @@
-use util::string_span_tokenize;
+use tokenize::util::string_span_tokenize;
 
+// TODO: determine if we should implement an iterator
 /*struct Tokens {
     inner_vec: Vec<i32, i32>,
     curr_idx: i32,
@@ -35,7 +36,7 @@ pub trait TokenizerI {
         for s in strings.iter() {
             vec.push(self.tokenize(s));
         }
-        vec
+        return vec;
     }
 
     // TODO: Unsure if we can use an iterator the way Python does...
@@ -46,7 +47,7 @@ pub trait TokenizerI {
             let span: Vec<(i32, i32)> = self.span_tokenize(s);
             result.push(span);
         }
-        result
+        return result;
     }
 }
 
@@ -69,7 +70,7 @@ impl TokenizerI for StringTokenizer {
             },
             Err(err) => { print!("{:?}", err) }
         }
-        result
+        return result;
     }
 }
 
