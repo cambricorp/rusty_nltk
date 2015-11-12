@@ -1,6 +1,7 @@
 # editor files
 *~
 *#
+*swp
 
 # Compiled files
 *.o
