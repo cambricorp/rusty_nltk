@@ -30,3 +30,29 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(i32, i32)>, Strin
         Ok(result)
     }
 }
+
+// TODO: Look up regexp API so we can finish this method...
+/*pub fn regexp_span_tokenize(s: &str, regexp: &) -> Vec<(i32, i32)> {
+    let mut left = 0;
+    let mut result: Vec<(i32, i32)> = Vec::new();
+    for m in finditr(regexp, s) {
+        right, next = m.span();
+        if right != 0 {
+            result.push(left, right);
+        }
+        left = next;
+    }
+    result.push(left, strlen);
+    result
+}*/
+
+pub fn spans_to_relative(spans: Vec<(i32, i32)>) -> Vec<(i32, i32)> {
+    let mut prev = 0;
+    let mut result: Vec<(i32, i32)> = Vec::new();
+    for tuple in spans.iter() {
+        let (left, right) = tuple.to_owned();
+        result.push( (left - prev, right - left) );
+        prev = right;
+    }
+    result
+}
