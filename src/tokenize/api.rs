@@ -1,32 +1,7 @@
 use tokenize::util::string_span_tokenize;
 
-// TODO: determine if we should implement an iterator
-/*struct Tokens {
-    inner_vec: Vec<usize, usize>,
-    curr_idx: usize,
-}
-
-impl Tokens {
-    fn new(inner_vec: Vec<usize, usize>) -> Tokens {
-        Tokens { inner_vec: inner_vec, curr_idx: 0 }
-    }
-}
-
-impl Iterator for Tokens {
-    type Item = Vec<usize, usize>;
-
-    fn next(&mut self) -> Option<Vec<usize, usize>> {
-        if curr_idx >= inner_vec.len() {
-            None
-        } else {
-            let result = Some(self.inner_vec[self.curr_idx]);
-            self.curr_idx += 1;
-            result
-        }
-    }
-}*/
-
 pub trait TokenizerI {
+
     fn tokenize<'a>(&'a self, s: &'a str) -> Vec<&str>;
 
     fn span_tokenize(&self, s: &str) -> Vec<(usize, usize)>;
