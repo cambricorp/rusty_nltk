@@ -1,3 +1,4 @@
+extern crate regex;
 pub mod app;
 pub mod ccg;
 pub mod chat;

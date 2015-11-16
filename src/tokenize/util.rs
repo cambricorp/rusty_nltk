@@ -1,3 +1,6 @@
+extern crate regex;
+use regex::Regex;
+
 pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(i32, i32)>, String> {
     if sep.len() == 0 {
         Err(String::from("Error! Separator has a length of 0!"))
@@ -31,27 +34,20 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(i32, i32)>, Strin
     }
 }
 
-// TODO: Look up regexp API so we can finish this method...
-/*pub fn regexp_span_tokenize(s: &str, regexp: &) -> Vec<(i32, i32)> {
-    let mut left = 0;
-    let mut result: Vec<(i32, i32)> = Vec::new();
-    for m in finditr(regexp, s) {
-        right, next = m.span();
-        if right != 0 {
-            result.push(left, right);
-        }
-        left = next;
+pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize)> {
+    let mut result: Vec<(usize, usize)> = Vec::new();
+    for pos in regexp.find_iter(s) {
+        result.push(pos);
     }
-    result.push(left, strlen);
-    result
-}*/
+    return result;
+}
 
-pub fn spans_to_relative(spans: Vec<(i32, i32)>) -> Vec<(i32, i32)> {
+pub fn spans_to_relative(spans: Vec<(usize, usize)>) -> Vec<(usize, usize)> {
     let mut prev = 0;
-    let mut result: Vec<(i32, i32)> = Vec::new();
+    let mut result: Vec<(usize, usize)> = Vec::new();
     for tuple in spans.iter() {
         let (left, right) = tuple.to_owned();
-        result.push( (left - prev, right - left) );
+        result.push((left - prev, right - left));
         prev = right;
     }
     result

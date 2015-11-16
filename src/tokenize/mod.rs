@@ -1,3 +1,4 @@
+extern crate regex;
 pub mod api;
 pub mod casual;
 pub mod mwe;
