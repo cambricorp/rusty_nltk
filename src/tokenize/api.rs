@@ -14,10 +14,8 @@ pub trait TokenizerI {
         return vec;
     }
 
-    // TODO: Unsure if we can use an iterator the way Python does...
-    // so for now, just return a Vec
-    fn span_tokenize_sents(&self, strings: Vec<&str>)  -> Vec<Vec<(usize, usize)>> {
-        let mut result: Vec<Vec<(usize, usize)>> = Vec::new();
+    fn span_tokenize_sents(&self, strings: Vec<&str>)  -> Vec<Vec<(i32, i32)>> {
+        let mut result: Vec<Vec<(i32, i32)>> = Vec::new();
         for s in strings.iter() {
             let span: Vec<(usize, usize)> = self.span_tokenize(s);
             result.push(span);
