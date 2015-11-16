@@ -8,7 +8,7 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
         // TODO: we'll likely want to do some error checking
         // to ensure s.len() and str.len() don't exceed usize::MAX
         let strlen: usize = s.len();
-        let seplen: usize = sep.len() as usize;
+        let seplen: usize = sep.len();
         let mut result: Vec<(usize, usize)> = Vec::new();
         let mut left: usize = 0;
         let mut r_idx: usize;
@@ -65,7 +65,7 @@ mod util_tests {
     fn string_span_tokenize_test() {
         let test_string = "hello world";
         let separator = " ";
-        let result: Vec<(i32, i32)> = string_span_tokenize(test_string, separator).unwrap();
+        let result: Vec<(usize, usize)> = string_span_tokenize(test_string, separator).unwrap();
 
         let expected = vec![(0, 5), (6, 11)];
         assert_eq!(expected, result);
