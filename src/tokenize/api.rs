@@ -46,3 +46,52 @@ impl TokenizerI for StringTokenizer {
         return result;
     }
 }
+
+
+#[cfg(test)]
+mod test_api {
+    use super::TokenizerI;
+    use super::StringTokenizer;
+
+    #[test]
+    fn tokenize_sents_test() {
+        let test_strings: Vec<&str> = vec!["hello world", "foo bar"];
+
+        let str_tok = StringTokenizer { _string: " " };
+        let result: Vec<Vec<&str>> = str_tok.tokenize_sents(test_strings);
+
+        let expected: Vec<Vec<&str>> = vec![vec!["hello", "world"], vec!["foo", "bar"]];
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn span_tokenize_sents_test() {
+        let test_strings: Vec<&str> = vec!["hello world", "foo bar"];
+        let str_tok = StringTokenizer { _string: " " };
+        let result: Vec<Vec<(i32, i32)>> = str_tok.span_tokenize_sents(test_strings);
+
+        let expected = vec![vec![(0, 5), (6, 11)], vec![(0, 3), (4, 7)]];
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn tokenize_test() {
+        let test_string = "hello world";
+        let str_tok = StringTokenizer { _string: " " };
+        let result: Vec<&str> = str_tok.tokenize(test_string);
+
+        let expected = vec!["hello", "world"];
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn  span_tokenize_test() {
+        let test_string = "hello world";
+        let str_tok = StringTokenizer { _string: " " };
+        let result: Vec<(i32, i32)> = str_tok.span_tokenize(test_string);
+
+        let expected = vec![(0, 5), (6, 11)];
+        assert_eq!(expected, result);
+    }
+}
+>>>>>>> Add unit tests within tokenize/api.rs
