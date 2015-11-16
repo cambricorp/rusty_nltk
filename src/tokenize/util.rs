@@ -30,7 +30,7 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
             }
             left = r_idx + seplen;
         }
-        Ok(result)
+        return Ok(result);
     }
 }
 
@@ -50,5 +50,41 @@ pub fn spans_to_relative(spans: Vec<(usize, usize)>) -> Vec<(usize, usize)> {
         result.push((left - prev, right - left));
         prev = right;
     }
-    result
+    return result;
+}
+
+#[cfg(test)]
+mod util_tests {
+    use regex::Regex;
+
+    use super::string_span_tokenize;
+    use super::regexp_span_tokenize;
+    use super::spans_to_relative;
+
+    #[test]
+    fn string_span_tokenize_test() {
+        let test_string = "hello world";
+        let separator = " ";
+        let result: Vec<(i32, i32)> = string_span_tokenize(test_string, separator).unwrap();
+
+        let expected = vec![(0, 5), (6, 11)];
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn regexp_span_tokenize_test() {
+        let test_string = "hello world";
+        let separator = Regex::new(r"\s").unwrap();
+        let result = regexp_span_tokenize(test_string, &separator);
+
+        assert_eq!(vec![(0, 5), (6, 11)], result);
+    }
+
+    #[test]
+    fn spans_to_relative_test() {
+        let test_span = vec![(0, 5), (6, 11)];
+        let result = spans_to_relative(test_span);
+
+        assert_eq!(vec![(0, 5), (1, 5)], result);
+    }
 }
