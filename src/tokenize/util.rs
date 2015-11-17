@@ -13,7 +13,7 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
         let mut left: usize = 0;
         let mut r_idx: usize;
         loop {
-            let right = s.find(sep);
+            let right = s[left..].find(sep); // TODO: Will this work on unicode?
             match right {
                 Some(right_idx) => {
                     if right_idx != 0 {
