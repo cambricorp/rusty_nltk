@@ -63,7 +63,7 @@ mod test_api {
         let expected: Vec<Vec<&str>> = vec![vec!["hello", "world"], vec!["foo", "bar"]];
         assert_eq!(expected, result);
     }
-/*
+
     #[test]
     fn span_tokenize_sents_test() {
         let test_strings: Vec<&str> = vec!["hello world", "foo bar"];
@@ -73,7 +73,7 @@ mod test_api {
         let expected = vec![vec![(0, 5), (6, 11)], vec![(0, 3), (4, 7)]];
         assert_eq!(expected, result);
     }
-*/
+
     #[test]
     fn tokenize_test() {
         let test_string = "hello world";
@@ -83,7 +83,7 @@ mod test_api {
         let expected = vec!["hello", "world"];
         assert_eq!(expected, result);
     }
-/*
+
     #[test]
     fn  span_tokenize_test() {
         let test_string = "hello world";
@@ -93,5 +93,5 @@ mod test_api {
         let expected = vec![(0, 5), (6, 11)];
         assert_eq!(expected, result);
     }
-*/
+
 }

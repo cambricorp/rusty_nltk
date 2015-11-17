@@ -72,7 +72,6 @@ mod util_tests {
     use super::regexp_span_tokenize;
     use super::spans_to_relative;
 
-/*
     #[test]
     fn string_span_tokenize_test() {
         let test_string = "hello world";
@@ -82,7 +81,7 @@ mod util_tests {
         let expected = vec![(0, 5), (6, 11)];
         assert_eq!(expected, result);
     }
-*/
+
     #[test]
     fn regexp_span_tokenize_test() {
         let test_string = "hello world";
