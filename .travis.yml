@@ -11,3 +11,7 @@ notifications:
   email:
     on_success: change
     on_failure: always
+  notifications:
+    slack: team-side-projects:y5cqN0AsdclRw6Cz3fQDG0Kc#rusty_nltk
+      on_success: :change
+      on_failure: :always
