@@ -7,11 +7,11 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
     } else {
         // TODO: we'll likely want to do some error checking
         // to ensure s.len() and str.len() don't exceed usize::MAX
-        let strlen: usize = s.len();
-        let seplen: usize = sep.len();
+        let strlen = s.len();
+        let seplen = sep.len();
         let mut result: Vec<(usize, usize)> = Vec::new();
-        let mut left: usize = 0;
-        let mut r_idx: usize;
+        let mut left = 0;
+        let mut r_idx;
         loop {
             let right = s[left..].find(sep); // TODO: Will this work on unicode?
             match right {
@@ -36,10 +36,10 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
 
 pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize)> {
     let mut result: Vec<(usize, usize)> = Vec::new();
-    let strlen: usize = s.len();
-    let mut left: usize = 0;
-    let mut right: usize;
-    let mut next: usize;
+    let strlen = s.len();
+    let mut left = 0;
+    let mut right;
+    let mut next;
 
     for pos in regexp.find_iter(s) {
         right = pos.0;
