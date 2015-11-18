@@ -17,13 +17,13 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
             match right {
                 Some(right_idx) => {
                     if right_idx != 0 {
-                        result.push( (left, right_idx as usize) );
+                        result.push((left, right_idx));
                     }
-                    r_idx = right_idx as usize;
+                    r_idx = right_idx;
                 },
                 None => {
                     if left != strlen {
-                        result.push( (left, strlen) );
+                        result.push((left, strlen));
                     }
                     break;
                 }
@@ -36,6 +36,7 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
 
 pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize)> {
     let mut result: Vec<(usize, usize)> = Vec::new();
+    let strlen: usize = s.len();
     let mut left: usize = 0;
     let mut right: usize;
     let mut next: usize;
@@ -48,7 +49,7 @@ pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize
         }
         left = next
     }
-    result.push((left, s.len()));
+    result.push((left, strlen));
 
     return result;
 }
