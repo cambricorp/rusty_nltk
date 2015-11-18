@@ -4,7 +4,9 @@ pub trait TokenizerI {
 
     fn tokenize<'a>(&'a self, s: &'a str) -> Vec<&str>;
 
-    fn span_tokenize(&self, s: &str) -> Vec<(usize, usize)>;
+    fn span_tokenize(&self, _s: &str) -> Result<Vec<(usize, usize)>, ()> {
+        return Err(());
+    }
 
     fn tokenize_sents<'a>(&'a self, strings: Vec<&'a str>) -> Vec<Vec<&str>> {
         let mut vec = Vec::new();
@@ -17,7 +19,7 @@ pub trait TokenizerI {
     fn span_tokenize_sents(&self, strings: Vec<&str>)  -> Vec<Vec<(usize, usize)>> {
         let mut result: Vec<Vec<(usize, usize)>> = Vec::new();
         for s in strings.iter() {
-            let span: Vec<(usize, usize)> = self.span_tokenize(s);
+            let span: Vec<(usize, usize)> = self.span_tokenize(s).unwrap();
             result.push(span);
         }
         return result;
@@ -33,17 +35,17 @@ impl TokenizerI for StringTokenizer {
         return split_str;
     }
 
-    fn span_tokenize(&self, s: &str) -> Vec<(usize, usize)> {
+    fn span_tokenize(&self, _s: &str) -> Result<Vec<(usize, usize)>, ()> {
         let mut result: Vec<(usize, usize)> = Vec::new();
-        match string_span_tokenize(s, self._string) {
+        match string_span_tokenize(_s, self._string) {
             Ok(spans) => {
                 for span in spans.iter() {
                     result.push(span.to_owned());
                 }
             },
-            Err(err) => { print!("{:?}", err) }
+            Err(err) => { print!("{:?}", err); }
         }
-        return result;
+        return Ok(result);
     }
 }
 
@@ -88,7 +90,7 @@ mod test_api {
     fn  span_tokenize_test() {
         let test_string = "hello world";
         let str_tok = StringTokenizer { _string: " " };
-        let result: Vec<(usize, usize)> = str_tok.span_tokenize(test_string);
+        let result: Vec<(usize, usize)> = str_tok.span_tokenize(test_string).unwrap();
 
         let expected = vec![(0, 5), (6, 11)];
         assert_eq!(expected, result);
