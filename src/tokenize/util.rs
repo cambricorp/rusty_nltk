@@ -62,7 +62,7 @@ pub fn spans_to_relative(spans: Vec<(usize, usize)>) -> Vec<(usize, usize)> {
 }
 
 #[cfg(test)]
-mod util_tests {
+mod test_util {
     use regex::Regex;
 
     use super::string_span_tokenize;
