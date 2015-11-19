@@ -38,12 +38,8 @@ pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize
     let mut result: Vec<(usize, usize)> = Vec::new();
     let strlen = s.len();
     let mut left = 0;
-    let mut right;
-    let mut next;
 
-    for pos in regexp.find_iter(s) {
-        right = pos.0;
-        next = pos.1;
+    for (right, next) in regexp.find_iter(s) {
         if right != 0 {
             result.push((left, right));
         }
