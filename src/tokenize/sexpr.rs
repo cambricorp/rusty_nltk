@@ -36,7 +36,7 @@ impl TokenizerI for SExprTokenizer {
             }
             if paren == self._close_paren {
                 if self._strict && depth == 0 {
-                    return Err(format!("Unmatched open paren at {}", pos));
+                    return Err(format!("Unmatched open token at {}", pos));
                 }
                 depth = cmp::max(0, depth-1);
                 if depth == 0 {
@@ -57,7 +57,7 @@ mod test_sexpr {
     use super::SExprTokenizer;
 
     #[test]
-    fn strict_parens_test() {
+    fn passing_strict_parens_test() {
         let _strict =  true;
         let _open_paren = "(";
         let _close_paren = ")";
@@ -72,5 +72,41 @@ mod test_sexpr {
         let expected = vec!["(a b (c d))", "e", "f", "(g)"];
         let result = tokenizer.tokenize(text).unwrap();
         assert_eq!(expected, result);
+    }
+
+    #[test]
+    fn passing_strict_braces_test() {
+        let _strict =  true;
+        let _open_paren = "{";
+        let _close_paren = "}";
+        let _paren_regexp = Regex::new(
+            &format!("\\{}|\\{}", _open_paren, _close_paren)
+        ).unwrap();
+
+        let tokenizer = SExprTokenizer{_strict: _strict, _open_paren: _open_paren,
+            _close_paren: _close_paren, _paren_regexp: _paren_regexp};
+
+        let text = "{a b {c d}} e f {g}";
+        let expected = vec!["{a b {c d}}", "e", "f", "{g}"];
+        let result = tokenizer.tokenize(text).unwrap();
+        assert_eq!(expected, result);
+    }
+
+    #[test]
+    #[should_panic(expected = "Unmatched open token at 20")]
+    fn failing_strict_braces_test() {
+        let _strict =  true;
+        let _open_paren = "{";
+        let _close_paren = "}";
+        let _paren_regexp = Regex::new(
+            &format!("\\{}|\\{}", _open_paren, _close_paren)
+        ).unwrap();
+
+        let tokenizer = SExprTokenizer{_strict: _strict, _open_paren: _open_paren,
+            _close_paren: _close_paren, _paren_regexp: _paren_regexp};
+
+        let text = "{a b {c d}} e f {g} }";
+        let _result = tokenizer.tokenize(text).unwrap();
+        // Tests expectedly fails - no need to assert.
     }
 }
