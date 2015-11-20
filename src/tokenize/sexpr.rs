@@ -25,8 +25,9 @@ impl TokenizerI for SExprTokenizer {
             let (start, end) = cap.pos(0).unwrap();
 
             if depth == 0 {
-                for token in _s[pos..start].split_whitespace() {
-                    result.push(token);
+                for token in _s[pos..start].split(|c: char| c.is_whitespace())
+                                           .filter(|s| !s.is_empty()) {
+                        result.push(token);
                 }
                 pos = start;
             }
