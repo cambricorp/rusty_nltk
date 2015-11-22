@@ -26,18 +26,18 @@ pub trait TokenizerI {
     }
 }
 
-pub struct StringTokenizer { _string: &'static str }
+pub struct StringTokenizer { pub string: &'static str }
 
 impl TokenizerI for StringTokenizer {
 
     fn tokenize<'a>(&'a self, s: &'a str) -> Result<Vec<&str>, String> {
-        let split_str: Vec<&str> = s.split(self._string).collect();
+        let split_str: Vec<&str> = s.split(self.string).collect();
         return Ok(split_str);
     }
 
     fn span_tokenize(&self, _s: &str) -> Result<Vec<(usize, usize)>, ()> {
         let mut result: Vec<(usize, usize)> = Vec::new();
-        match string_span_tokenize(_s, self._string) {
+        match string_span_tokenize(_s, self.string) {
             Ok(spans) => {
                 for span in spans.iter() {
                     result.push(span.to_owned());
@@ -59,7 +59,7 @@ mod test_api {
     fn tokenize_sents_test() {
         let test_strings: Vec<&str> = vec!["hello world", "foo bar"];
 
-        let str_tok = StringTokenizer { _string: " " };
+        let str_tok = StringTokenizer { string: " " };
         let result: Vec<Vec<&str>> = str_tok.tokenize_sents(test_strings);
 
         let expected: Vec<Vec<&str>> = vec![vec!["hello", "world"], vec!["foo", "bar"]];
@@ -69,7 +69,7 @@ mod test_api {
     #[test]
     fn span_tokenize_sents_test() {
         let test_strings: Vec<&str> = vec!["hello world", "foo bar"];
-        let str_tok = StringTokenizer { _string: " " };
+        let str_tok = StringTokenizer { string: " " };
         let result: Vec<Vec<(usize, usize)>> = str_tok.span_tokenize_sents(test_strings);
 
         let expected = vec![vec![(0, 5), (6, 11)], vec![(0, 3), (4, 7)]];
@@ -79,7 +79,7 @@ mod test_api {
     #[test]
     fn tokenize_test() {
         let test_string = "hello world";
-        let str_tok = StringTokenizer { _string: " " };
+        let str_tok = StringTokenizer { string: " " };
         let result: Vec<&str> = str_tok.tokenize(test_string).unwrap();
 
         let expected = vec!["hello", "world"];
@@ -89,7 +89,7 @@ mod test_api {
     #[test]
     fn  span_tokenize_test() {
         let test_string = "hello world";
-        let str_tok = StringTokenizer { _string: " " };
+        let str_tok = StringTokenizer { string: " " };
         let result: Vec<(usize, usize)> = str_tok.span_tokenize(test_string).unwrap();
 
         let expected = vec![(0, 5), (6, 11)];

@@ -6,10 +6,10 @@ use std::cmp;
 use tokenize::api::TokenizerI;
 
 pub struct SExprTokenizer {
-    _strict: bool,
-    _open_paren: &'static str,
-    _close_paren: &'static str,
-    _paren_regexp: regex::Regex
+    strict: bool,
+    open_paren: &'static str,
+    close_paren: &'static str,
+    paren_regexp: regex::Regex
 }
 
 impl TokenizerI for SExprTokenizer {
@@ -19,7 +19,7 @@ impl TokenizerI for SExprTokenizer {
         let mut pos: usize = 0;
         let mut depth: usize = 0;
 
-        for cap in self._paren_regexp.captures_iter(_s) {
+        for cap in self.paren_regexp.captures_iter(_s) {
             let paren = cap.at(0).unwrap();
 
             let (start, end) = cap.pos(0).unwrap();
@@ -31,11 +31,11 @@ impl TokenizerI for SExprTokenizer {
                 }
                 pos = start;
             }
-            if paren == self._open_paren {
+            if paren == self.open_paren {
                 depth = depth + 1;
             }
-            if paren == self._close_paren {
-                if self._strict && depth == 0 {
+            if paren == self.close_paren {
+                if self.strict && depth == 0 {
                     return Err(format!("Unmatched open token at {}", pos));
                 }
                 depth = cmp::max(0, depth-1);
@@ -58,15 +58,19 @@ mod test_sexpr {
 
     #[test]
     fn passing_strict_parens_test() {
-        let _strict =  true;
-        let _open_paren = "(";
-        let _close_paren = ")";
-        let _paren_regexp = Regex::new(
-            &format!("\\{}|\\{}", _open_paren, _close_paren)
+        let strict =  true;
+        let open_paren = "(";
+        let close_paren = ")";
+        let paren_regexp = Regex::new(
+            &format!("\\{}|\\{}", open_paren, close_paren)
         ).unwrap();
 
-        let tokenizer = SExprTokenizer{_strict: _strict, _open_paren: _open_paren,
-            _close_paren: _close_paren, _paren_regexp: _paren_regexp};
+        let tokenizer = SExprTokenizer {
+            strict: strict,
+            open_paren: open_paren,
+            close_paren: close_paren,
+            paren_regexp: paren_regexp
+        };
 
         let text = "(a b (c d)) e f (g)";
         let expected = vec!["(a b (c d))", "e", "f", "(g)"];
@@ -76,15 +80,19 @@ mod test_sexpr {
 
     #[test]
     fn passing_strict_braces_test() {
-        let _strict =  true;
-        let _open_paren = "{";
-        let _close_paren = "}";
-        let _paren_regexp = Regex::new(
-            &format!("\\{}|\\{}", _open_paren, _close_paren)
+        let strict =  true;
+        let open_paren = "{";
+        let close_paren = "}";
+        let paren_regexp = Regex::new(
+            &format!("\\{}|\\{}", open_paren, close_paren)
         ).unwrap();
 
-        let tokenizer = SExprTokenizer{_strict: _strict, _open_paren: _open_paren,
-            _close_paren: _close_paren, _paren_regexp: _paren_regexp};
+        let tokenizer = SExprTokenizer {
+            strict: strict,
+            open_paren: open_paren,
+            close_paren: close_paren,
+            paren_regexp: paren_regexp
+        };
 
         let text = "{a b {c d}} e f {g}";
         let expected = vec!["{a b {c d}}", "e", "f", "{g}"];
@@ -95,15 +103,19 @@ mod test_sexpr {
     #[test]
     #[should_panic(expected = "Unmatched open token at 20")]
     fn failing_strict_braces_test() {
-        let _strict =  true;
-        let _open_paren = "{";
-        let _close_paren = "}";
-        let _paren_regexp = Regex::new(
-            &format!("\\{}|\\{}", _open_paren, _close_paren)
+        let strict =  true;
+        let open_paren = "{";
+        let close_paren = "}";
+        let paren_regexp = Regex::new(
+            &format!("\\{}|\\{}", open_paren, close_paren)
         ).unwrap();
 
-        let tokenizer = SExprTokenizer{_strict: _strict, _open_paren: _open_paren,
-            _close_paren: _close_paren, _paren_regexp: _paren_regexp};
+        let tokenizer = SExprTokenizer {
+            strict: strict,
+            open_paren: open_paren,
+            close_paren: close_paren,
+            paren_regexp: paren_regexp
+        };
 
         let text = "{a b {c d}} e f {g} }";
         let _result = tokenizer.tokenize(text).unwrap();
