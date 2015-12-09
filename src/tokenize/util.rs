@@ -44,9 +44,7 @@ pub fn spans_to_relative(spans: &[(usize, usize)]) -> Vec<(usize, usize)> {
 mod test_util {
     use regex::Regex;
 
-    use super::string_span_tokenize;
-    use super::regexp_span_tokenize;
-    use super::spans_to_relative;
+    use super::{string_span_tokenize, regexp_span_tokenize, spans_to_relative};
 
     #[test]
     fn string_span_tokenize_test() {
@@ -61,7 +59,8 @@ mod test_util {
     #[test]
     fn regexp_span_tokenize_test() {
         let test_string = "hello world";
-        let separator = Regex::new(r"\s").unwrap();
+        let whitespace = r"\s";
+        let separator = Regex::new(whitespace).unwrap();
         let result = regexp_span_tokenize(test_string, &separator);
 
         let expected = vec![(0, 5), (6, 11)];
