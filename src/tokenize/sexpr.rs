@@ -55,7 +55,6 @@ impl Tokenizer for SExpressionTokenizer {
 
         for cap in self.paren_regexp.captures_iter(s) {
             let paren = cap.at(0).unwrap();
-
             let (start, end) = cap.pos(0).unwrap();
 
             if depth == 0 {
@@ -65,7 +64,6 @@ impl Tokenizer for SExpressionTokenizer {
                     .filter(|s| !s.is_empty());
 
                 result.extend(tokens);
-
                 pos = start;
             }
 
@@ -86,19 +84,34 @@ impl Tokenizer for SExpressionTokenizer {
     }
 }
 
+pub fn sexpression_tokenize<'a>(s: &'a str, strict: bool) -> Result<Vec<&'a str>, String> {
+    use tokenize::api::Tokenizer;
+    use tokenize::sexpr::SExpressionTokenizerBuilder;
+    let tokenizer = SExpressionTokenizerBuilder::new(strict).build();
+    tokenizer.tokenize(s)
+}
+
 #[cfg(test)]
 mod test_sexpr {
     use tokenize::api::Tokenizer;
-    use super::SExpressionTokenizerBuilder;
+    use super::{SExpressionTokenizerBuilder, sexpression_tokenize};
 
     #[test]
     fn passing_strict_parens_test() {
         let strict = true;
         let tokenizer = SExpressionTokenizerBuilder::new(strict).build();
-
         let text = "(a b (c d)) e f (g)";
         let expected = vec!["(a b (c d))", "e", "f", "(g)"];
         let result = tokenizer.tokenize(text);
+        assert_eq!(Ok(expected), result);
+    }
+
+    #[test]
+    fn passing_strict_parens_test_fn() {
+        let strict = true;
+        let text = "(a b (c d)) e f (g)";
+        let expected = vec!["(a b (c d))", "e", "f", "(g)"];
+        let result = sexpression_tokenize(text, strict);
         assert_eq!(Ok(expected), result);
     }
 
