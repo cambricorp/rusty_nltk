@@ -45,18 +45,18 @@ mod test_util {
     fn test_space_tokenize() {
         let s = "Good muffins cost $3.88\nin New York.  Please buy me\ntwo of them.\n\nThanks.";
         let tokenizer = SpaceTokenizerBuilder::new().build();
-        let result = tokenizer.tokenize(s).unwrap();
+        let result = tokenizer.tokenize(s);
         let expected = vec!["Good", "muffins", "cost", "$3.88\nin", "New", "York.", "",
         "Please", "buy", "me\ntwo", "of", "them.\n\nThanks."];
-        assert_eq!(expected, result);
+        assert_eq!(Ok(expected), result);
     }
 
     #[test]
     fn test_tab_tokenizer() {
         let s = "a\tb c\n\t d";
         let tokenizer = TabTokenizerBuilder::new().build();
-        let result = tokenizer.tokenize(s).unwrap();
+        let result = tokenizer.tokenize(s);
         let expected = vec!["a", "b c\n", " d"];
-        assert_eq!(expected, result);
+        assert_eq!(Ok(expected), result);
     }
 }

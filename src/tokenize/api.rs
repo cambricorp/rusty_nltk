@@ -73,17 +73,17 @@ mod test_api {
     #[test]
     fn tokenize_sents_test() {
         let tokenizer = StringTokenizerBuilder::new(" ").build();
-        let test_strings: Vec<&str> = vec!["hello world", "foo bar"];
-        let result: Vec<Vec<&str>> = tokenizer.tokenize_sents(&test_strings);
-        let expected: Vec<Vec<&str>> = vec![vec!["hello", "world"], vec!["foo", "bar"]];
+        let test_strings = vec!["hello world", "foo bar"];
+        let result = tokenizer.tokenize_sents(&test_strings);
+        let expected = vec![vec!["hello", "world"], vec!["foo", "bar"]];
         assert_eq!(expected, result);
     }
 
     #[test]
     fn span_tokenize_sents_test() {
         let tokenizer = StringTokenizerBuilder::new(" ").build();
-        let test_strings: Vec<&str> = vec!["hello world", "foo bar"];
-        let result: Vec<Vec<(usize, usize)>> = tokenizer.span_tokenize_sents(&test_strings);
+        let test_strings = vec!["hello world", "foo bar"];
+        let result = tokenizer.span_tokenize_sents(&test_strings);
         let expected = vec![vec![(0, 5), (6, 11)], vec![(0, 3), (4, 7)]];
         assert_eq!(expected, result);
     }
@@ -92,17 +92,17 @@ mod test_api {
     fn tokenize_test() {
         let tokenizer = StringTokenizerBuilder::new(" ").build();
         let test_string = "hello world";
-        let result: Vec<&str> = tokenizer.tokenize(test_string).unwrap();
+        let result = tokenizer.tokenize(test_string);
         let expected = vec!["hello", "world"];
-        assert_eq!(expected, result);
+        assert_eq!(Ok(expected), result);
     }
 
     #[test]
     fn  span_tokenize_test() {
         let tokenizer = StringTokenizerBuilder::new(" ").build();
         let test_string = "hello world";
-        let result: Vec<(usize, usize)> = tokenizer.span_tokenize(test_string).unwrap();
+        let result = tokenizer.span_tokenize(test_string);
         let expected = vec![(0, 5), (6, 11)];
-        assert_eq!(expected, result);
+        assert_eq!(Ok(expected), result);
     }
 }
