@@ -53,10 +53,14 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
 ///   let s = "Good muffins cost $3.88\nin New York.  Please buy me
 ///           two of them.\n\nThanks.";
 ///   let regex = Regex::new(r"\s").unwrap();
-///   let spans = regexp_span_tokenize(s, &regex);
+///   let spans = regexp_span_tokenize(s, &regex).unwrap();
 /// }
 /// ```
-pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize)> {
+pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Result<Vec<(usize, usize)>, String> {
+    if regexp.as_str().is_empty() {
+        return Err(String::from("Error! Separator has a length of 0!"));
+    }
+
     let mut left = 0;
     let mut spans: Vec<_> = regexp.find_iter(s).map(|(right, next)| {
         let span = (left, right);
@@ -64,7 +68,7 @@ pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize
         span
     }).collect();
     spans.push((left, s.len()));
-    spans
+    Ok(spans)
 }
 
 ///  Returns a list of relative spans, given a sequence of spans.
@@ -83,7 +87,7 @@ pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize
 ///   let s = "Good muffins cost $3.88\nin New York.  Please buy me
 ///           two of them.\n\nThanks.";
 ///   let regex = Regex::new(r"\s").unwrap();
-///   let spans = regexp_span_tokenize(s, &regex);
+///   let spans = regexp_span_tokenize(s, &regex).unwrap();
 ///   let rel_spans = spans_to_relative(&spans);
 /// }
 /// ```
@@ -117,7 +121,7 @@ mod test_util {
         let separator = Regex::new(whitespace).unwrap();
         let result = regexp_span_tokenize(test_string, &separator);
         let expected = vec![(0, 5), (6, 11)];
-        assert_eq!(expected, result);
+        assert_eq!(Ok(expected), result);
     }
 
     #[test]
