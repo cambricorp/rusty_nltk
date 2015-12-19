@@ -1,6 +1,26 @@
 extern crate regex;
 use regex::Regex;
 
+/// Return a list of the offsets of the tokens in `s`, as a sequence of `(start, end)`
+/// tuples, by splitting the string at each occurrence of `sep`. If `sep` is an empty
+/// string, an error will be returned.
+///
+/// # Examples
+///
+/// To return a list of spans based on spaces:
+///
+/// ```
+/// extern crate regex;
+/// extern crate rusty_nltk;
+/// use rusty_nltk::tokenize::util::string_span_tokenize;
+/// use regex::Regex;
+///
+/// fn main() {
+///   let s = "Good muffins cost $3.88\nin New York.  Please buy me
+///           two of them.\n\nThanks.";
+///   let spans = string_span_tokenize(s, " ").unwrap();
+/// }
+/// ```
 pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, String> {
     if sep.is_empty() {
         return Err(String::from("Error! Separator has a length of 0!"));
@@ -16,6 +36,26 @@ pub fn string_span_tokenize(s: &str, sep: &str) -> Result<Vec<(usize, usize)>, S
     Ok(spans)
 }
 
+/// Return a list of the offsets of the tokens in `s`, as a sequence of `(start, end)`
+/// tuples, by splitting the string at each successive match of `regex`.
+///
+/// # Examples
+///
+/// To return a list of spans based on whitespaces:
+///
+/// ```
+/// extern crate regex;
+/// extern crate rusty_nltk;
+/// use rusty_nltk::tokenize::util::regexp_span_tokenize;
+/// use regex::Regex;
+///
+/// fn main() {
+///   let s = "Good muffins cost $3.88\nin New York.  Please buy me
+///           two of them.\n\nThanks.";
+///   let regex = Regex::new(r"\s").unwrap();
+///   let spans = regexp_span_tokenize(s, &regex);
+/// }
+/// ```
 pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize)> {
     let mut left = 0;
     let mut spans: Vec<_> = regexp.find_iter(s).map(|(right, next)| {
@@ -27,6 +67,26 @@ pub fn regexp_span_tokenize(s: &str, regexp: &regex::Regex) -> Vec<(usize, usize
     spans
 }
 
+///  Returns a list of relative spans, given a sequence of spans.
+///
+/// # Examples
+///
+/// To return a list of relative spans based on whitespaces:
+///
+/// ```
+/// extern crate regex;
+/// extern crate rusty_nltk;
+/// use rusty_nltk::tokenize::util::{spans_to_relative, regexp_span_tokenize};
+/// use regex::Regex;
+///
+/// fn main() {
+///   let s = "Good muffins cost $3.88\nin New York.  Please buy me
+///           two of them.\n\nThanks.";
+///   let regex = Regex::new(r"\s").unwrap();
+///   let spans = regexp_span_tokenize(s, &regex);
+///   let rel_spans = spans_to_relative(&spans);
+/// }
+/// ```
 pub fn spans_to_relative(spans: &[(usize, usize)]) -> Vec<(usize, usize)> {
     let mut prev = 0;
     spans.iter().map(|&(left, right)| {
