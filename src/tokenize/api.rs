@@ -1,7 +1,8 @@
 use tokenize::util::string_span_tokenize;
 
+/// `Tokenizer` is a trait that performs basic tokenizing operations
+/// on text such as tokenizing and span tokenizing.
 pub trait Tokenizer {
-
     fn tokenize<'a>(&self, s: &'a str) -> Result<Vec<&'a str>, String>;
 
     fn span_tokenize(&self, _s: &str) -> Result<Vec<(usize, usize)>, String> {
@@ -21,17 +22,71 @@ pub trait Tokenizer {
     }
 }
 
+/// `StringTokenizerBuilder` builds string tokenizers that will
+/// tokenize on each instance of `_string`.
 pub struct StringTokenizerBuilder {
     _string: &'static str,
 }
 
 impl StringTokenizerBuilder {
+    /// Constructs a new `StringTokenizerBuilder` which tokenizes on `string`.
+    ///
+    /// # Examples
+    ///
+    /// To create a `StringTokenizerBuilder` that builds
+    /// a space tokenizer:
+    ///
+    /// ```
+    /// extern crate rusty_nltk;
+    /// use rusty_nltk::tokenize::api::StringTokenizerBuilder;
+    ///
+    /// fn main() {
+    ///   let space_tokenizer = StringTokenizerBuilder::new(" ");
+    /// }
+    /// ```
+    ///
+    /// To create a `StringTokenizerBuilder` that builds
+    /// a newline tokenizer:
+    ///
+    /// ```
+    /// extern crate rusty_nltk;
+    /// use rusty_nltk::tokenize::api::StringTokenizerBuilder;
+    ///
+    /// fn main() {
+    ///   let newline_tokenizer = StringTokenizerBuilder::new("\n");
+    /// }
+    /// ```
     pub fn new(string: &'static str) -> StringTokenizerBuilder {
         StringTokenizerBuilder {
             _string: string,
         }
     }
 
+    /// Builds an `StringTokenizer`
+    ///
+    /// # Examples
+    ///
+    /// To build a `StringTokenizer` which tokenizes on spaces:
+    ///
+    /// ```
+    /// extern crate rusty_nltk;
+    /// use rusty_nltk::tokenize::api::{Tokenizer, StringTokenizer, StringTokenizerBuilder};
+    ///
+    /// fn main() {
+    ///   let space_tokenizer = StringTokenizerBuilder::new(" ").build();
+    /// }
+    /// ```
+    ///
+    /// To build a `StringTokenizer` which tokenizes on newlines:
+    ///
+    /// ```
+    /// extern crate rusty_nltk;
+    /// use rusty_nltk::tokenize::api::{Tokenizer, StringTokenizer, StringTokenizerBuilder};
+    ///
+    /// fn main() {
+    ///   let newline_tokenizer = StringTokenizerBuilder::new("\n").build();
+    /// }
+    /// ```
     pub fn build(self) -> StringTokenizer {
         StringTokenizer {
             string: self._string,
@@ -39,12 +94,40 @@ impl StringTokenizerBuilder {
     }
 }
 
+/// `StringTokenizer` tokenizes text based on parameters determined by
+/// its builder.
 pub struct StringTokenizer {
     pub string: &'static str
 }
 
+/// Tokenize `s` based on parameters set by `StringTokenizerBuilder`
+///
+/// # Examples
+///
+/// To tokenize `"Hello, World!"` on spaces:
+///
+/// ```
+/// extern crate rusty_nltk;
+/// use rusty_nltk::tokenize::api::{Tokenizer, StringTokenizer, StringTokenizerBuilder};
+///
+/// fn main() {
+///   let space_tokenizer = StringTokenizerBuilder::new(" ").build();
+///   let result = space_tokenizer.tokenize("Hello, World!");
+/// }
+/// ```
+///
+/// To tokenize `"Hello,\nWorld!"` on spaces:
+///
+/// ```
+/// extern crate rusty_nltk;
+/// use rusty_nltk::tokenize::api::{Tokenizer, StringTokenizer, StringTokenizerBuilder};
+///
+/// fn main() {
+///   let space_tokenizer = StringTokenizerBuilder::new("\n").build();
+///   let result = space_tokenizer.tokenize("Hello,\nWorld!");
+/// }
+/// ```
 impl Tokenizer for StringTokenizer {
-
     fn tokenize<'a>(&self, s: &'a str) -> Result<Vec<&'a str>, String> {
         let split_str = s.split(self.string).collect();
         Ok(split_str)
@@ -64,7 +147,6 @@ impl Tokenizer for StringTokenizer {
         Ok(result)
     }
 }
-
 
 #[cfg(test)]
 mod test_api {

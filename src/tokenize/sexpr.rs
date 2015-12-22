@@ -5,7 +5,6 @@ use tokenize::api::Tokenizer;
 
 /// `SExpressionTokenizerBuilder` builds s-expression tokenizers with varying strictness.
 /// Unless grouping symbols are changed, they will be defaulted to `(` and `)`.
-
 pub struct SExpressionTokenizerBuilder {
     /// _strict determines if non-matching parenthesis are allowed.
     _strict: bool,
@@ -20,20 +19,27 @@ impl SExpressionTokenizerBuilder {
     ///
     /// # Examples
     ///
-    /// To create a strict `SExpressionTokenizerBuilder`:
+    /// To create a `SExpressionTokenizerBuilder` that builds a strict tokenizer:
     ///
     /// ```
+    /// extern crate rusty_nltk;
     /// use rusty_nltk::tokenize::sexpr::SExpressionTokenizerBuilder;
     ///
-    /// let SExpressionTokenizerBuilder = SExpressionTokenizerBuilder::new(true);
+    /// fn main() {
+    ///   let sexpr_tokenizer_builder = SExpressionTokenizerBuilder::new(true);
+    /// }
     /// ```
     ///
-    /// To create an `SExpressionTokenizerBuilder` that is not strict:
+    /// To create an `SExpressionTokenizerBuilder` that builds a tokenizer that
+    /// is not strict:
     ///
     /// ```
+    /// extern crate rusty_nltk;
     /// use rusty_nltk::tokenize::sexpr::SExpressionTokenizerBuilder;
     ///
-    /// let SExpressionTokenizerBuilder = SExpressionTokenizerBuilder::new(false);
+    /// fn main() {
+    ///   let sexpr_tokenizer_builder = SExpressionTokenizerBuilder::new(false);
+    /// }
     /// ```
     pub fn new(strict: bool) -> SExpressionTokenizerBuilder {
         SExpressionTokenizerBuilder {
@@ -51,18 +57,22 @@ impl SExpressionTokenizerBuilder {
     /// `SExpressionTokenizerBuilder`:
     ///
     /// ```
+    /// extern crate rusty_nltk;
     /// use rusty_nltk::tokenize::sexpr::SExpressionTokenizerBuilder;
-    ///
-    /// let SExpressionTokenizerBuilder = SExpressionTokenizerBuilder::new(true).open_close('{', '}');
+    /// fn main() {
+    ///   let sexpr_tokenizer_builder = SExpressionTokenizerBuilder::new(true).open_close('{', '}');
+    /// }
     /// ```
     ///
     /// To change the grouping symbols to `[` and `]` for an
     /// `SExpressionTokenizerBuilder` that is not strict:
     ///
     /// ```
+    /// extern crate rusty_nltk;
     /// use rusty_nltk::tokenize::sexpr::SExpressionTokenizerBuilder;
-    ///
-    /// let SExpressionTokenizerBuilder = SExpressionTokenizerBuilder::new(false).open_close('[', ']');
+    /// fn main() {
+    ///   let sexpr_tokenizer_builder = SExpressionTokenizerBuilder::new(false).open_close('[', ']');
+    /// }
     /// ```
     pub fn open_close(self, open: char, close: char) -> SExpressionTokenizerBuilder {
         SExpressionTokenizerBuilder {
@@ -79,24 +89,36 @@ impl SExpressionTokenizerBuilder {
     /// To build a strict `SExpressionTokenizer` with `{` and `}` grouping symbols:
     ///
     /// ```
+    /// extern crate rusty_nltk;
     /// use rusty_nltk::tokenize::sexpr::{SExpressionTokenizer, SExpressionTokenizerBuilder};
     ///
-    /// let tokenizer = SExpressionTokenizerBuilder::new(true).open_close('{', '}').build();
+    /// fn main() {
+    ///   let sexpr_tokenizer_builder = SExpressionTokenizerBuilder::new(true).open_close('{', '}');
+    ///   let tokenizer = sexpr_tokenizer_builder.build();
+    /// }
     /// ```
     ///
     /// To build an `SExpressionTokenizer` that is not strict with `[` and `]` grouping symbols:
     ///
     /// ```
+    /// extern crate rusty_nltk;
     /// use rusty_nltk::tokenize::sexpr::{SExpressionTokenizer, SExpressionTokenizerBuilder};
     ///
-    /// let tokenizer = SExpressionTokenizerBuilder::new(false).open_close('[', ']').build();
+    /// fn main() {
+    ///   let sexpr_tokenizer_builder = SExpressionTokenizerBuilder::new(false).open_close('[', ']');
+    ///   let tokenizer = sexpr_tokenizer_builder.build();
+    /// }
     /// ```
+    ///
     /// To build an `SExpressionTokenizer` that is not strict with default `(` and `)` grouping symbols:
     ///
     /// ```
+    /// extern crate rusty_nltk;
     /// use rusty_nltk::tokenize::sexpr::{SExpressionTokenizer, SExpressionTokenizerBuilder};
     ///
-    /// let tokenizer = SExpressionTokenizerBuilder::new(false).build();
+    /// fn main() {
+    ///   let tokenizer = SExpressionTokenizerBuilder::new(false).build();
+    /// }
     /// ```
     pub fn build(self) -> SExpressionTokenizer {
         let paren_regexp = Regex::new(
@@ -125,32 +147,38 @@ pub struct SExpressionTokenizer {
     paren_regexp: regex::Regex
 }
 
+/// Tokenize `s` based on parameters set by `SExpressionTokenizerBuilder`
+///
+/// # Examples
+///
+/// To tokenize `"(a b (c d)) e f (g)"` strictly with default grouping symbols:
+///
+/// ```
+/// extern crate rusty_nltk;
+/// use rusty_nltk::tokenize::sexpr::{SExpressionTokenizer, SExpressionTokenizerBuilder};
+/// use rusty_nltk::tokenize::api::Tokenizer;
+///
+/// fn main() {
+///   let text = "(a b (c d)) e f (g)";
+///   let tokenizer = SExpressionTokenizerBuilder::new(true).build();
+///   let result = tokenizer.tokenize(text);
+/// }
+/// ```
+///
+/// To tokenize `"(a b (c d)) e f (g)"` not strictly with default grouping symbols:
+///
+/// ```
+/// extern crate rusty_nltk;
+/// use rusty_nltk::tokenize::sexpr::{SExpressionTokenizer, SExpressionTokenizerBuilder};
+/// use rusty_nltk::tokenize::api::Tokenizer;
+///
+/// fn main() {
+///   let text = "(a b (c d)) e f (g)";
+///   let tokenizer = SExpressionTokenizerBuilder::new(false).build();
+///   let result = tokenizer.tokenize(text);
+/// }
+/// ```
 impl Tokenizer for SExpressionTokenizer {
-    /// Tokenize `s` based on parameters set by `SExpressionTokenizerBuilder`
-    ///
-    /// # Examples
-    ///
-    /// To tokenize `"(a b (c d)) e f (g)"` strictly with default grouping symbols:
-    ///
-    /// ```
-    /// use rusty_nltk::tokenize::sexpr::{SExpressionTokenizer, SExpressionTokenizerBuilder};
-    /// use rusty_nltk::tokenize::api::Tokenizer;
-    ///
-    /// let text = "(a b (c d)) e f (g)";
-    /// let tokenizer = SExpressionTokenizerBuilder::new(true).build();
-    /// let result = tokenizer.tokenize(text);
-    /// ```
-    ///
-    /// To tokenize `"(a b (c d)) e f (g)"` not strictly with default grouping symbols:
-    ///
-    /// ```
-    /// use rusty_nltk::tokenize::sexpr::{SExpressionTokenizer, SExpressionTokenizerBuilder};
-    /// use rusty_nltk::tokenize::api::Tokenizer;
-    ///
-    /// let text = "(a b (c d)) e f (g)";
-    /// let tokenizer = SExpressionTokenizerBuilder::new(false).build();
-    /// let result = tokenizer.tokenize(text);
-    /// ```
     fn tokenize<'a>(&self, s: &'a str) -> Result<Vec<&'a str>, String> {
         let mut result = Vec::new();
         let mut pos = 0;
@@ -195,10 +223,13 @@ impl Tokenizer for SExpressionTokenizer {
 /// To tokenize `"(a b (c d)) e f (g)"` strictly:
 ///
 /// ```
+/// extern crate rusty_nltk;
 /// use rusty_nltk::tokenize::sexpr::sexpression_tokenize;
 ///
-/// let text = "(a b (c d)) e f (g)";
-/// let result = sexpression_tokenize(text, true);
+/// fn main() {
+///   let text = "(a b (c d)) e f (g)";
+///   let result = sexpression_tokenize(text, true);
+/// }
 /// ```
 pub fn sexpression_tokenize<'a>(s: &'a str, strict: bool) -> Result<Vec<&'a str>, String> {
     use tokenize::api::Tokenizer;

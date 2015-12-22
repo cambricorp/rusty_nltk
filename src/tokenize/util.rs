@@ -10,10 +10,8 @@ use regex::Regex;
 /// To return a list of spans based on spaces:
 ///
 /// ```
-/// extern crate regex;
 /// extern crate rusty_nltk;
 /// use rusty_nltk::tokenize::util::string_span_tokenize;
-/// use regex::Regex;
 ///
 /// fn main() {
 ///   let s = "Good muffins cost $3.88\nin New York.  Please buy me
